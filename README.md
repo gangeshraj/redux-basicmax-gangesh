@@ -1,0 +1,1 @@
+This is just basics of redux
