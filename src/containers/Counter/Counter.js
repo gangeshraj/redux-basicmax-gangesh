@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';//used to connect to central state
+import { connect } from 'react-redux';
+import * as actionCreators from '../../store/actions/index';
 
 import CounterControl from '../../components/CounterControl/CounterControl';
 import CounterOutput from '../../components/CounterOutput/CounterOutput';
-import * as actionTypes from '../../store/actions';
 
 class Counter extends Component {
     render () {
@@ -18,10 +18,7 @@ class Counter extends Component {
                 <button onClick={() => this.props.onStoreResult(this.props.ctr)}>Store Result</button>
                 <ul>
                     {this.props.storedResults.map(strResult => (
-                        <li key={strResult.id} 
-                            onClick={() => this.props.onDeleteResult(strResult.id)}>
-                            {strResult.value}
-                        </li>
+                        <li key={strResult.id} onClick={() => this.props.onDeleteResult(strResult.id)}>{strResult.value}</li>
                     ))}
                 </ul>
             </div>
@@ -29,23 +26,23 @@ class Counter extends Component {
     }
 }
 
-const mapStateToProps = state => {//from central state it is receiving some part of 
-    //central state 
-    console.log("here",state)
+const mapStateToProps = state => {
+    console.log("reachingmapstatetoprops in Counter");
     return {
-        ctr: state.ctr.counter,//(global state).(variable usedin combineReducers).statevariable
-        storedResults: state.res.results//(global state).(variable usedin combineReducers).statevariable
+        ctr: state.ctr.counter,//getting from centralstate.combinedReducerProperty.proprtyName
+        storedResults: state.res.results
     }
 };
 
 const mapDispatchToProps = dispatch => {
+    console.log("reaching mapdispatchtoprops inCounter")
     return {
-        onIncrementCounter: () => dispatch({type: actionTypes.INCREMENT}),
-        onDecrementCounter: () => dispatch({type: actionTypes.DECREMENT}),
-        onAddCounter: () => dispatch({type: actionTypes.ADD, val: 10}),
-        onSubtractCounter: () => dispatch({type: actionTypes.SUBTRACT, val: 15}),//actiontype with payload
-        onStoreResult: (result) => dispatch({type: actionTypes.STORE_RESULT, result: result}),
-        onDeleteResult: (id) => dispatch({type: actionTypes.DELETE_RESULT, resultElId: id})
+        onIncrementCounter: () => dispatch(actionCreators.increment()),
+        onDecrementCounter: () => dispatch(actionCreators.decrement()),
+        onAddCounter: () => dispatch(actionCreators.add(10)),
+        onSubtractCounter: () => dispatch(actionCreators.subtract(15)),
+        onStoreResult: (result) => dispatch(actionCreators.storeResult(result)),
+        onDeleteResult: (id) => dispatch(actionCreators.deleteResult(id))
     }
 };
 

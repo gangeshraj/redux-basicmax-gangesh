@@ -1,45 +1,39 @@
-import * as actionTypes from './actionsTypes';
+import * as actionTypes from './actionTypes';
 
-//below is action creator 
-export const storeResultNext=(res)=>{
+//action creators
+export const storeResultNext = ( res ) => {
+    console.log("middlewarebythunk storeresultNext");
     return {
-        type:actionTypes.STORE_RESULT,
-        result:res
+        type: actionTypes.STORE_RESULT,
+        result: res
+    };
+}
+
+//midle ware calling action creators
+export const storeResult = ( res ) => {//middle ware provided  byredux thunk
+    //it returns a function which gets two argument first is dispatch
+    //the next action and 2nd is a function getting current state
+    console.log("middlewarebythunk storeresult");
+    return (dispatch,getState) => {
+        setTimeout( () => {
+            const counter=getState().ctr.counter;//can get state of central store
+            console.log("store");
+            dispatch(storeResultNext(res));
+        }, 2000 );
     }
-}
+};
 
-export const storeResult=(res)=>{//payload passed in
-    //it is the middle ware applied to have asynchronous code running and returning
-    //a function instead of javascript object this is due to reduxThunk
-    //else by javascript default the running of code isSychronous
-    //get agumenets dispatch and getState due to redux-thunk
-        console.log("outside dispatch os store result",res);
-        return dispatch=>{//have dispatch as argument
-            console.log("inside dispatch os store result",res);
-            setTimeout(()=>{
-                dispatch(storeResultNext(res));
-            },2000)
-        }
-}
-
-
-//below is action creator
-export const deleteResultNext=(id)=>{
+export const deleteResultNext = ( resElId ) => {
     return {
-        type:actionTypes.DELETE_RESULT,
-        resultElId: id
-    }
-}
+        type: actionTypes.DELETE_RESULT,
+        resultElId: resElId
+    };
+};
 
-export const deleteResult=(id)=>{//payload passed in
-    //it is the middle ware applied to have asynchronous code running and returning
-    //a function instead of javascript object this is due to reduxThunk
-    //else by javascript default the running of code isSychronous
-    //get agumenets dispatch and getState due to redux-thunk
-    return (dispatch,getState)=>{//have dispatch as argument
-        setTimeout(()=>{
-            console.log("ok",getState().counter);
-            dispatch(storeResultNext(id));
-        },8000)
+export const deleteResult = ( resElId ) => {
+    return dispatch => {
+        setTimeout( () => {
+            dispatch(deleteResultNext(resElId));
+        }, 2000 );
     }
-}
+};

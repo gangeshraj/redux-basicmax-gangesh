@@ -1,31 +1,41 @@
-import * as actionTypes from '../actions';
+import * as actionTypes from '../actions/actionTypes';
+import { deepCopyObjectFunction } from '../../deepCopyObjectFunction';
 
 const initialState = {
-    counter: 1
+    counter: 0
 };
 
-//if no state is passed take default state"innitialState"
 const reducer = ( state = initialState, action ) => {
+    console.log("reaching reducers ofCounter");
     switch ( action.type ) {
-        case actionTypes.INCREMENT://have deep copyof object below is alernate way of doing it
-            const newState = Object.assign({}, state);
-            newState.counter = state.counter + 1;
-            return newState;
+        case actionTypes.INCREMENT:
+            return deepCopyObjectFunction(state,{counter:state.counter+1})
+            //alternate syntax Above is the use of a outside function
+            // return {
+            //     ...state,
+            //     counter: state.counter + 1
+            // }
         case actionTypes.DECREMENT:
-            return {
-                ...state,
-                counter: state.counter - 1
-            }
+            return deepCopyObjectFunction(state,{counter:state.counter-1})
+            //alternate syntax Above is the use of a outside function
+            // return {
+            //     ...state,
+            //     counter: state.counter - 1
+            // }
         case actionTypes.ADD:
-            return {
-                ...state,
-                counter: state.counter + action.val
-            }
+            return deepCopyObjectFunction(state,{counter:state.counter+action.val})
+            //alternate syntax Above is the use of a outside function
+            // return {
+            //     ...state,
+            //     counter: state.counter + action.val
+            // }
         case actionTypes.SUBTRACT:
-            return {
-                ...state,
-                counter: state.counter - action.val
-            }
+            return deepCopyObjectFunction(state,{counter:state.counter-action.val})
+            //alternate syntax Above is the use of a outside function
+            // return {
+            //     ...state,
+            //     counter: state.counter - action.val
+            // }
     }
     return state;
 };
