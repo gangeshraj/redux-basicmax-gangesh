@@ -1,4 +1,4 @@
-## This is just basics of redux
+## This is just basics of redux with react
 ## hosted on
 ## https://redux-reactmax-gangesh.firebaseapp.com/
 
